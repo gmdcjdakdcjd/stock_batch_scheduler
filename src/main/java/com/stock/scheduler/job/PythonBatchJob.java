@@ -15,9 +15,16 @@ public class PythonBatchJob {
                     "C:\\Users\\ysh01\\anaconda3\\Scripts\\conda.exe",
                     "run", "-n", "python_stock_batch", "--no-capture-output", "python", scriptPath
             );
+            // ✅ 작업 디렉토리
+            pb.directory(new File("D:\\STOCK_PROJECT\\python_stock_batch"));
 
+            // ✅ 환경 변수 세팅
+            pb.environment().put("PYTHONPATH", "D:\\STOCK_PROJECT\\python_stock_batch");
             pb.environment().put("PYTHONIOENCODING", "utf-8");
+
             pb.redirectErrorStream(true);
+
+
 
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
