@@ -1,3 +1,4 @@
+
 package com.stock.scheduler.job;
 
 import lombok.AllArgsConstructor;
@@ -14,3 +15,4 @@ public class PythonJobResult {
     private String errorMsg;  // 에러 메시지 (없으면 NO_ERROR)
     private Long resultId;    // 🔥 strategy_result.id (추가)
 }
+

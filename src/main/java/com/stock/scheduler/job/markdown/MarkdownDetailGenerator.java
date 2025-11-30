@@ -1,3 +1,4 @@
+/*
 package com.stock.scheduler.job.markdown;
 
 import com.stock.scheduler.entity.SignalRecord;
@@ -32,3 +33,4 @@ public class MarkdownDetailGenerator implements MarkdownTemplate {
     }
 
 }
+*/

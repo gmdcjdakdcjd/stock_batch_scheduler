@@ -1,3 +1,4 @@
+
 package com.stock.scheduler.entity;
 
 import lombok.AllArgsConstructor;
@@ -17,3 +18,4 @@ public class SignalRecord {
     private double returns;    // 수익률
     private int rankOrder;     // 순위
 }
+

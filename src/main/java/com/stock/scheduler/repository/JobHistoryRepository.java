@@ -1,3 +1,4 @@
+/*
 package com.stock.scheduler.repository;
 
 import com.stock.scheduler.entity.JobHistory;
@@ -19,4 +20,15 @@ public interface JobHistoryRepository extends JpaRepository<JobHistory, Integer>
 
     // ✅ 특정 jobName에 대해 최신(endTime 기준 DESC) 1건 조회
     Optional<JobHistory> findTopByJobNameOrderByEndTimeDesc(String jobName);
+
+    @Query("""
+       SELECT j FROM JobHistory j
+       WHERE j.startTime BETWEEN :start AND :end
+       ORDER BY j.startTime ASC
+       """)
+    List<JobHistory> findByDateBetween(
+            @Param("start") java.sql.Timestamp start,
+            @Param("end") java.sql.Timestamp end);
+
 }
+*/

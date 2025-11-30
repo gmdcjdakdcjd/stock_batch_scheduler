@@ -1,3 +1,4 @@
+
 package com.stock.scheduler.job;
 
 import com.stock.scheduler.entity.SignalRecord;
@@ -154,3 +155,4 @@ public class PythonBatchJob {
         }
     }
 }
+

@@ -1,9 +1,11 @@
+/*
 package com.stock.scheduler.job.markdown;
 
 import com.stock.scheduler.entity.JobHistory;
 import com.stock.scheduler.repository.JobHistoryRepository;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,7 +20,10 @@ public class MarkdownDashboardGenerator {
     }
 
     public String generate(LocalDate date) {
-        List<JobHistory> jobs = jobHistoryRepository.findByDate(date);
+        // ✅ 날짜 범위 지정 (00:00~23:59)
+        Timestamp startTimeRange = Timestamp.valueOf(date.atStartOfDay());
+        Timestamp endTimeRange = Timestamp.valueOf(date.plusDays(1).atStartOfDay());
+        List<JobHistory> jobs = jobHistoryRepository.findByDateBetween(startTimeRange, endTimeRange);
 
         if (jobs == null || jobs.isEmpty()) {
             return "⚠️ 오늘(" + date + ") 실행된 배치 내역이 없습니다.";
@@ -32,14 +37,27 @@ public class MarkdownDashboardGenerator {
         // ✅ 코스피 / ETF 개수 (동적 추출)
         int kospiCount = jobs.stream()
                 .filter(j -> "DBUpdater".equals(j.getJobName()))
-                .map(JobHistory::getRowCount)
+                .map(JobHistory::getCodeCount)
                 .findFirst()
                 .orElse(0);
 
         int etfCount = jobs.stream()
                 .filter(j -> "ETFDBUpdater".equals(j.getJobName()))
-                .map(JobHistory::getRowCount)
+                .map(JobHistory::getCodeCount)
                 .findFirst()
+                .orElse(0);
+
+        // ✅ 미국 종목 수
+        int usStockCount = jobs.stream()
+                .filter(j -> "DBUpdater_US".equals(j.getJobName()))
+                .mapToInt(JobHistory::getCodeCount)
+                .max()
+                .orElse(0);
+
+        int usEtfCount = jobs.stream()
+                .filter(j -> "ETFDBUpdater_US".equals(j.getJobName()))
+                .mapToInt(JobHistory::getCodeCount)
+                .max()
                 .orElse(0);
 
         // ✅ Markdown 빌드
@@ -49,9 +67,12 @@ public class MarkdownDashboardGenerator {
 
         md.append("| 날짜 | 배치 그룹 | 관리 종목 | 성공률 | 총 소요시간 |\n");
         md.append("|------|------------|------------|-----------|--------------|\n");
+
+        // ✅ 🇰🇷 + 🇺🇸 종목 통합 표기
         md.append(String.format(
-                "| %s | + %d개 배치 | 코스피 %d / ETF %d | ✅ %d / %d | ⏱️ %d분 %d초 |\n",
-                date, total, kospiCount, etfCount, success, total, totalSec / 60, totalSec % 60
+                "| %s | + %d개 배치 | 🇰🇷 코스피 %d / ETF %d <br> 🇺🇸 주식 %d / ETF %d | ✅ %d / %d | ⏱️ %d분 %d초 |\n",
+                date, total, kospiCount, etfCount, usStockCount, usEtfCount,
+                success, total, totalSec / 60, totalSec % 60
         ));
 
         md.append("\n---\n\n");
@@ -62,10 +83,10 @@ public class MarkdownDashboardGenerator {
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         for (JobHistory j : jobs) {
-            String start = (j.getStartTime() != null)
+            String startStr = (j.getStartTime() != null)
                     ? j.getStartTime().toLocalDateTime().format(timeFmt)
                     : "-";
-            String end = (j.getEndTime() != null)
+            String endStr = (j.getEndTime() != null)
                     ? j.getEndTime().toLocalDateTime().format(timeFmt)
                     : "-";
 
@@ -73,8 +94,8 @@ public class MarkdownDashboardGenerator {
                     j.getJobName(),
                     "SUCCESS".equals(j.getStatus()) ? "✅ 성공" : "❌ 실패",
                     j.getRowCount(),
-                    start,
-                    end,
+                    startStr,
+                    endStr,
                     j.getDurationSec()
             ));
         }
@@ -94,3 +115,4 @@ public class MarkdownDashboardGenerator {
         return md.toString();
     }
 }
+*/

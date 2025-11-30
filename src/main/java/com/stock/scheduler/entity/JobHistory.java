@@ -1,3 +1,4 @@
+/*
 package com.stock.scheduler.entity;
 
 import jakarta.persistence.*;
@@ -39,3 +40,4 @@ public class JobHistory {
 }
 
 
+*/
