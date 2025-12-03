@@ -212,11 +212,11 @@ public class BatchInProcessor {
 
         String srcDir = "D:/STOCK_PROJECT/batch_out/" + today;
         String destDir = "D:/STOCK_PROJECT/batch_in/" + today;
-        String historyDir = "D:/STOCK_PROJECT/batch_out_history/" + today;
+//        String historyDir = "D:/STOCK_PROJECT/batch_out_history/" + today;
 
         try {
             Path destPath = Paths.get(destDir);
-            Path historyPath = Paths.get(historyDir);
+//            Path historyPath = Paths.get(historyDir);
 
             // 목적지 폴더 없으면 생성
             if (!Files.exists(destPath)) {
@@ -224,9 +224,9 @@ public class BatchInProcessor {
             }
 
             // 히스토리 폴더 없으면 생성
-            if (!Files.exists(historyPath)) {
-                Files.createDirectories(historyPath);
-            }
+//            if (!Files.exists(historyPath)) {
+//                Files.createDirectories(historyPath);
+//            }
 
             // 원본 폴더의 파일들 읽기
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(srcDir))) {
@@ -242,8 +242,8 @@ public class BatchInProcessor {
                         Files.copy(srcFile, destFile, StandardCopyOption.REPLACE_EXISTING);
 
                         // 2️⃣ batch_out_history 로 MOVE (이동)
-                        Path historyFile = historyPath.resolve(fileName);
-                        Files.move(srcFile, historyFile, StandardCopyOption.REPLACE_EXISTING);
+//                        Path historyFile = historyPath.resolve(fileName);
+//                        Files.move(srcFile, historyFile, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
             }
