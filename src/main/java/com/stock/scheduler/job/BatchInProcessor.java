@@ -145,9 +145,13 @@ public class BatchInProcessor {
                         }
 
                         String cleaned = value.replace(",", "").trim();
+                        String headerLc = header.toLowerCase();
 
-                        // 🔥 code 라면 무조건 문자열로 넣기
-                        if (header.equalsIgnoreCase("code")) {
+                        // 🔥 code, stock_code 만 문자열로 강제
+                        if (
+                                headerLc.equals("code")
+                                        || headerLc.equals("stock_code")
+                        ) {
                             ps.setString(i + 1, cleaned);
                             continue;
                         }
